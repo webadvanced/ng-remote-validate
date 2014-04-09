@@ -73,7 +73,7 @@ There are a few defaults that can be overwritten with options. They are:
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
 - `ng-remote-method` (default: 'POST') Type of request you would like to send
 
-**Example useing both**
+**Example using both**
 ```html
 <input type="password" 
        name="currentPassword" 
