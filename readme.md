@@ -1,4 +1,4 @@
-#Remote/Ajax Validation for Angularjs#
+#Ajax Validation for Angularjs#
 
 ngRemoveValidate makes it easy for you to validate form fields agents data from your server. For example, a sign up form may need to check if the email entered is already registered before submitting the form.
 
@@ -19,33 +19,59 @@ var app = angular.module( 'myApp', [ 'ngRemoteValidate' ] );
 ```
 
 **Using it in your forms**
+
 This will be a basic change password form that requires the user to enter their current password as well as the new password.
 ```html
 <h3>Change password</h3>
 <form name="changePasswordForm">
     <label for="currentPassword">Current</label>
-    <input type="password" name="currentPassword" placeholder="Current password" ng-model="password.current" ng-remote-validate="/customer/validpassword" required>
-    <span ng-show="changePasswordForm.currentPassword.$error.required && changePasswordForm.confirmPassword.$dirty">Required</span>
-    <span ng-show="changePasswordForm.currentPassword.$error.ngRemoteValidate">Incorrect current password. Please enter your current account password.</span>
+    <input type="password" 
+           name="currentPassword" 
+           placeholder="Current password" 
+           ng-model="password.current" 
+           ng-remote-validate="/customer/validpassword" 
+           required>
+    <span ng-show="changePasswordForm.currentPassword.$error.required && changePasswordForm.confirmPassword.$dirty">
+        Required
+    </span>
+    <span ng-show="changePasswordForm.currentPassword.$error.ngRemoteValidate">
+        Incorrect current password. Please enter your current account password.
+    </span>
 
     <label for="newPassword">New</label>
-    <input type="password" name="newPassword" placeholder="New password"  class="input-medium" ng-model="password.new" required>
+    <input type="password"
+           name="newPassword"
+           placeholder="New password"
+           ng-model="password.new"
+           required>
     
     <label for="confirmPassword">Confirm</label>
-    <input ng-disabled="" type="password" name="confirmPassword" placeholder="Confirm password" ng-model="password.confirm" ng-match="password.new" required>
-    <span ng-show="changePasswordForm.confirmPassword.$error.match">New and confirm do not match</span>
+    <input ng-disabled=""
+           type="password"
+           name="confirmPassword"
+           placeholder="Confirm password"
+           ng-model="password.confirm"
+           ng-match="password.new"
+           required>
+    <span ng-show="changePasswordForm.confirmPassword.$error.match">
+        New and confirm do not match
+    </span>
     
     <div>
-        <button type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword(password.new, changePasswordForm);reset();">Change password</button>
+        <button type="submit" 
+                ng-disabled="changePasswordForm.$invalid" 
+                ng-click="changePassword(password.new, changePasswordForm);reset();">
+            Change password
+        </button>
     </div>
 </form>
 ```
 
 ##Options##
-There are a few defaults that can be overwritten with options. They are
+There are a few defaults that can be overwritten with options. They are:
 
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
-- `ng-remote-method` (default: 'POST') Type of request you would like to sed
+- `ng-remote-method` (default: 'POST') Type of request you would like to send
 
 **Example useing both**
 ```html
