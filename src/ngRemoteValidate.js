@@ -78,7 +78,7 @@
         };
 
     angular.module( 'remoteValidation' )
-           .constant('MODULE_VERSION', '0.0.1')
+           .constant('MODULE_VERSION', '##_version_##')
            .directive( dirictiveId, [ '$http', '$timeout', remoteValidate ] );
            
 })( this.angular );
