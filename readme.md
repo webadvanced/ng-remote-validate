@@ -9,7 +9,7 @@ ngRemoveValidate makes it easy for you to validate form fields agents data from 
 Grab either the minified version or the standard source from the release folder and add it to your project.
 
 ```html
-<script type="text/javascript" src="../you/path/ngRemoteValidate.js"></script>
+<script type="text/javascript" src="../your/path/ngRemoteValidate.js"></script>
 ```
 
 **Include ngRemoteValidate in you Angular app**
