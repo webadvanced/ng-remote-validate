@@ -4,7 +4,7 @@
         throw 'Missing something? Please add angular.js to your project or move this script below the angular.js reference';
     }
 
-    var dirictiveId = 'ngRemoteValidate',
+    var directiveId = 'ngRemoteValidate',
         remoteValidate = function( $http, $timeout ) {
 
             return {
@@ -33,7 +33,7 @@
                     shouldProcess = function( value ) {
                         var otherRulesInValid = false;
                         for ( var p in ngModel.$error ) {
-                            if ( ngModel.$error[ p ] && p != dirictiveId ) {
+                            if ( ngModel.$error[ p ] && p != directiveId ) {
                                 otherRulesInValid = true;
                                 break;
                             }
@@ -42,7 +42,7 @@
                     };
 
                     setValidation = function( data ) {
-                        ngModel.$setValidity( dirictiveId, data.isValid );
+                        ngModel.$setValidity( directiveId, data.isValid );
                         addToCache( data );
                         el.removeClass( 'ng-processing' );
                     };
