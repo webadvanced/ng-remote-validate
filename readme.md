@@ -2,6 +2,16 @@
 
 ngRemoveValidate makes it easy for you to validate form fields agents data from your server. For example, a sign up form may need to check if the email entered is already registered before submitting the form.
 
+**Features:**
+
+- Drop in solution for Ajax validation of any text or password input
+
+- Works with Angulars build in validation and cab be accessed at formName.inputName.$error.ngRemoteValidate
+
+- Throttles server requests (default 400ms) and can be set with `ng-remote-throttle="550"`
+
+- Allows HTTP method definition (default POST) with `ng-remote-method="GET"`
+
 ##Getting started - Example##
 
 **Adding ngRemoteValidate to your project**
