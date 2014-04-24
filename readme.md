@@ -6,7 +6,7 @@ ngRemoveValidate makes it easy for you to validate form fields agents data from 
 
 - Drop in solution for Ajax validation of any text or password input
 
-- Works with Angulars build in validation and cab be accessed at formName.inputName.$error.ngRemoteValidate
+- Works with Angulars built in validation and cab be accessed at `formName.inputName.$error.ngRemoteValidate`
 
 - Throttles server requests (default 400ms) and can be set with `ng-remote-throttle="550"`
 
