@@ -6,7 +6,6 @@
 
     var directiveId = 'ngRemoteValidate',
         remoteValidate = function( $http, $timeout ) {
-
             return {
                 restrict: 'A',
                 require: 'ngModel',
@@ -82,4 +81,3 @@
            .directive( directiveId, [ '$http', '$timeout', remoteValidate ] );
            
 })( this.angular );
-
