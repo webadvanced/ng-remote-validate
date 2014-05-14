@@ -25,7 +25,7 @@ Grab either the minified version or the standard source from the release folder 
 **Include ngRemoteValidate in you Angular app**
 
 ```javascript
-var app = angular.module( 'myApp', [ 'ngRemoteValidate' ] );
+var app = angular.module( 'myApp', [ 'remoteValdiation' ] );
 ```
 
 **Using it in your forms**
