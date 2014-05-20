@@ -84,7 +84,7 @@ There are a few defaults that can be overwritten with options. They are:
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
 - `ng-remote-method` (default: 'POST') Type of request you would like to send
 
-**Example using both**
+**Example using all**
 ```html
 <input type="password" 
        name="currentPassword" 
@@ -93,6 +93,15 @@ There are a few defaults that can be overwritten with options. They are:
        ng-remote-validate="/customer/validpassword"
        ng-remote-throttle="550"
        ng-remote-method="GET"
+       required>
+
+<input type="text" 
+       name="email" 
+       placeholder="Email address" 
+       ng-model="email" 
+       ng-remote-validate="[ '/customer/email-registered', '/customer/email-restricted' ]"
+       ng-remote-throttle="800"
+       ng-remote-method="POST"
        required>
 ```
 
