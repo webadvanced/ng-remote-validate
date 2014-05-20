@@ -67,7 +67,7 @@
                         originalValue = originalValue || value;
 
                         if ( !shouldProcess( value ) ) {
-                            return setValidation( { data: [ { isValid: true, value: value } ] });
+                            return setValidation( [ { data: { isValid: true, value: value } } ]);
                         }
 
                         if ( cache[ value ] ) {
