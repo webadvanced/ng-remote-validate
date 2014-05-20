@@ -5,7 +5,7 @@
     }
 
     var directiveId = 'ngRemoteValidate',
-        remoteValidate = function( $http, $timeout ) {
+        remoteValidate = function( $http, $timeout, $q ) {
             return {
                 restrict: 'A',
                 require: 'ngModel',
@@ -24,9 +24,16 @@
 
                     angular.extend( options, attrs );
 
-                    addToCache = function( data ) {
-                        if ( cache[ data.value ] ) return;
-                        cache[ data.value ] = data.valid;
+                    if( options.ngRemoteValidate.charAt( 0 ) === '[' ) {
+                        options.urls = eval( options.ngRemoteValidate );
+                    } else {
+                        options.urls = [ options.ngRemoteValidate ];
+                    }
+
+                    addToCache = function( response ) {
+                        var value = response[ 0 ].data.value;
+                        if ( cache[ value ] ) return cache[ value ];
+                        cache[ value ] = response;
                     };
 
                     shouldProcess = function( value ) {
@@ -40,9 +47,18 @@
                         return !( ngModel.$pristine || value === originalValue || otherRulesInValid );
                     };
 
-                    setValidation = function( data ) {
-                        ngModel.$setValidity( directiveId, data.isValid );
-                        addToCache( data );
+                    setValidation = function( response ) {
+                        var i = 0,
+                            l = response.length,
+                            isValid = true;
+                        for( ; i < l; i++ ) {
+                            if( !response[ i ].data.isValid ) {
+                                isValid = false;
+                                break;
+                            }
+                        }
+                        addToCache( response );
+                        ngModel.$setValidity( directiveId, isValid );
                         el.removeClass( 'ng-processing' );
                     };
 
@@ -51,7 +67,7 @@
                         originalValue = originalValue || value;
 
                         if ( !shouldProcess( value ) ) {
-                            return setValidation( { isValid: true, value: value } );
+                            return setValidation( { data: [ { isValid: true, value: value } ] });
                         }
 
                         if ( cache[ value ] ) {
@@ -64,7 +80,15 @@
 
                         request = $timeout( function( ) {
                             el.addClass( 'ng-processing' );
-                            $http( { method: options.ngRemoteMethod, url: options.ngRemoteValidate, data: { value: value } } ).success( setValidation );
+                            var calls = [],
+                                i = 0,
+                                l = options.urls.length;
+                            for( ; i < l; i++ ) {
+                                calls.push( $http( { method: options.ngRemoteMethod, url: options.urls[ i ], data: { value: value } } ) );
+                            }
+
+                            $q.all( calls ).then( setValidation );
+                            
                         }, options.ngRemoteThrottle );
                         return true;
                     };
@@ -78,6 +102,6 @@
 
     angular.module( 'remoteValidation', [] )
            .constant('MODULE_VERSION', '##_version_##')
-           .directive( directiveId, [ '$http', '$timeout', remoteValidate ] );
+           .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
            
 })( this.angular );
