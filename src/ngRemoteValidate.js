@@ -14,7 +14,6 @@
                         handleChange,
                         setValidation,
                         addToCache,
-                        originalValue,
                         request,
                         shouldProcess,
                         options = {
@@ -44,7 +43,7 @@
                                 break;
                             }
                         }
-                        return !( ngModel.$pristine || value === originalValue || otherRulesInValid );
+                        return !( ngModel.$pristine || otherRulesInValid );
                     };
 
                     setValidation = function( response ) {
@@ -63,8 +62,7 @@
                     };
 
                     handleChange = function( value ) {
-
-                        originalValue = originalValue || value;
+                        if( typeof value === 'undefined' ) return;
 
                         if ( !shouldProcess( value ) ) {
                             return setValidation( [ { data: { isValid: true, value: value } } ]);
