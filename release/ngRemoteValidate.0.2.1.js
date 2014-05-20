@@ -46,7 +46,7 @@
                         return !( ngModel.$pristine || otherRulesInValid );
                     };
 
-                    setValidation = function( response ) {
+                    setValidation = function( response, skipCache ) {
                         var i = 0,
                             l = response.length,
                             isValid = true;
@@ -56,20 +56,23 @@
                                 break;
                             }
                         }
-                        addToCache( response );
+                        if( !skipCache ) {
+                            addToCache( response );    
+                        }
                         ngModel.$setValidity( directiveId, isValid );
                         el.removeClass( 'ng-processing' );
+                        ngModel.$processing = false;
                     };
 
                     handleChange = function( value ) {
                         if( typeof value === 'undefined' ) return;
 
                         if ( !shouldProcess( value ) ) {
-                            return setValidation( [ { data: { isValid: true, value: value } } ]);
+                            return setValidation( [ { data: { isValid: true, value: value } } ], true );
                         }
 
                         if ( cache[ value ] ) {
-                            return setValidation( cache[ value ] );
+                            return setValidation( cache[ value ], true );
                         }
 
                         if ( request ) {
@@ -78,6 +81,7 @@
 
                         request = $timeout( function( ) {
                             el.addClass( 'ng-processing' );
+                            ngModel.$processing = true;
                             var calls = [],
                                 i = 0,
                                 l = options.urls.length;

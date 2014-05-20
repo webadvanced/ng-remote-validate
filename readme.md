@@ -105,7 +105,7 @@ There are a few defaults that can be overwritten with options. They are:
        required>
 ```
 
-ngRemote will also add a class named `ng-processing` to the input while the Ajax request is processing. You can add some css to your project to show an animation in the input like so
+ngRemote will also add a class named `ng-processing` to the input while the Ajax request is processing and also sets a $processing property on your model property. You can add some css to your project to show an animation in the input like so:
 
 ```css
 input.ng-processing {
@@ -113,7 +113,11 @@ input.ng-processing {
     background-position: right center !important;
     background-repeat: no-repeat;
 }
-``` 
+```
+
+```html
+<span class="message" ng-show="formName.inputName.$processing">validating...</span>
+```
 
 ##Expected server response##
 
