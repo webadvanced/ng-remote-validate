@@ -80,6 +80,7 @@ This will be a basic change password form that requires the user to enter their 
 ##Options##
 There are a few defaults that can be overwritten with options. They are:
 
+- `ng-remote-validate` takes a string or an Array of string i.e. `ng-remote-validate="/url/one"` or `ng-remote-validate="[ '/url/one', '/url/two' ]"`
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
 - `ng-remote-method` (default: 'POST') Type of request you would like to send
 
