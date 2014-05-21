@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  div(ng-controller="testCtrl")
+    form(action="" method="POST" name="testForm")
+      div.wrap
+        label Username: 
+        input(type="text" name="name" ng-model="user.name" ng-remote-validate="/validators/duplicate")
+        div(ng-show="testForm.name.$error.ngRemoteValidate && testForm.name.$dirty") Your username is already registered
+        div(ng-show="!testForm.name.$error.ngRemoteValidate && testForm.name.$dirty") Username is available
+      br
+      br
+      div.wrap
+        label Email: 
+        input(type="text" name="email" ng-model="user.email" ng-remote-validate="['/validators/duplicate', '/validators/restricted']" ng-remote-throttle="800" required)
+        span(ng-show="testForm.email.$processing") searching...
+        div(ng-show="testForm.email.$error.required && testForm.email.$dirty") Required
+        div(ng-show="testForm.email.$error.ngRemoteValidate && testForm.email.$dirty") Your email is already registered
+        div(ng-show="!testForm.email.$error.ngRemoteValidate && testForm.email.$dirty") Email is available
+
+      input(type="submit" value="GO!")
+
