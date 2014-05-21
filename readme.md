@@ -80,10 +80,11 @@ This will be a basic change password form that requires the user to enter their 
 ##Options##
 There are a few defaults that can be overwritten with options. They are:
 
+- `ng-remote-validate` takes a string or an Array of string i.e. `ng-remote-validate="/url/one"` or `ng-remote-validate="[ '/url/one', '/url/two' ]"`
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
 - `ng-remote-method` (default: 'POST') Type of request you would like to send
 
-**Example using both**
+**Example using all**
 ```html
 <input type="password" 
        name="currentPassword" 
@@ -93,9 +94,18 @@ There are a few defaults that can be overwritten with options. They are:
        ng-remote-throttle="550"
        ng-remote-method="GET"
        required>
+
+<input type="text" 
+       name="email" 
+       placeholder="Email address" 
+       ng-model="email" 
+       ng-remote-validate="[ '/customer/email-registered', '/customer/email-restricted' ]"
+       ng-remote-throttle="800"
+       ng-remote-method="POST"
+       required>
 ```
 
-ngRemote will also add a class named `ng-processing` to the input while the Ajax request is processing. You can add some css to your project to show an animation in the input like so
+ngRemote will also add a class named `ng-processing` to the input while the Ajax request is processing and also sets a $processing property on your model property. You can add some css to your project to show an animation in the input like so:
 
 ```css
 input.ng-processing {
@@ -103,7 +113,11 @@ input.ng-processing {
     background-position: right center !important;
     background-repeat: no-repeat;
 }
-``` 
+```
+
+```html
+<span class="message" ng-show="formName.inputName.$processing">validating...</span>
+```
 
 ##Expected server response##
 
