@@ -82,13 +82,23 @@
                         request = $timeout( function( ) {
                             el.addClass( 'ng-processing' );
                             ngModel.$processing = true;
-                            var calls = [],
+							var calls = [],
                                 i = 0,
-                                l = options.urls.length;
-                            for( ; i < l; i++ ) {
-                                calls.push( $http( { method: options.ngRemoteMethod, url: options.urls[ i ], data: { value: value } } ) );
+                                l = options.urls.length,
+                                toValidate = { value: value },
+                                httpOpts = { method: options.ngRemoteMethod };
+
+                            if(options.ngRemoteMethod == 'POST'){
+                                httpOpts.data = toValidate;
+                            } else {
+                                httpOpts.params = toValidate;
                             }
 
+                            for( ; i < l; i++ ) {
+
+                                httpOpts.url =  options.urls[ i ];
+                                calls.push( $http( httpOpts ) );
+                            }
                             $q.all( calls ).then( setValidation );
                             
                         }, options.ngRemoteThrottle );
