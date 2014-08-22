@@ -16,7 +16,9 @@ ngRemoveValidate makes it easy for you to validate form fields agents data from 
 
 **Adding ngRemoteValidate to your project**
 
-`bower install ng-remote-validate`
+```
+bower install ng-remote-validate
+```
 
 *OR*
 
