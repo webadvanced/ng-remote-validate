@@ -1,5 +1,5 @@
 {
-  "name": "ngRemoteValidate",
+  "name": "ng-remote-validate",
   "version": "0.2.2",
   "description": "ngRemoveValidate makes it easy for you to validate form fields agents data from your server (AngularJS Ajax Validation).",
   "main": "release/ngRemoteValidate.js",
