@@ -87,6 +87,10 @@
                                 l = options.urls.length,
                                 toValidate = { value: value },
                                 httpOpts = { method: options.ngRemoteMethod };
+                            
+                            if ( scope[ el[0].name + 'SetArgs' ] ) {
+                                toValidate = scope[el[0].name + 'SetArgs'](value, el, attrs, ngModel);
+                            }
 
                             if(options.ngRemoteMethod == 'POST'){
                                 httpOpts.data = toValidate;
@@ -95,10 +99,10 @@
                             }
 
                             for( ; i < l; i++ ) {
-
                                 httpOpts.url =  options.urls[ i ];
                                 calls.push( $http( httpOpts ) );
                             }
+
                             $q.all( calls ).then( setValidation );
                             
                         }, options.ngRemoteThrottle );
