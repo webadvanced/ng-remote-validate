@@ -127,7 +127,7 @@ input.ng-processing {
 
 ##Server side##
 
-**Date sent to the server**
+**Data sent to the server**
 
 By default, ngRemoteValidate will send a simple JSON string to the server formatted like so:
 
@@ -135,7 +135,7 @@ By default, ngRemoteValidate will send a simple JSON string to the server format
 { "value": "inputValue" }
 ```
 
-If you would like to change what data is sent to the server, you can create an `inputNameSetArgs` callback on your controllers `$scope` that will fire before the request is sent to the server. This callback should return the data you want sent to the server.
+If you would like to change what data is sent to the server, you can create an `inputNameSetArgs` callback on your controllers `$scope`. This callback should return the data you want sent to the server.
 
 ```javascript
 $scope.currentPasswordSetArgs = function( val, el, attrs, ngModel ) {
