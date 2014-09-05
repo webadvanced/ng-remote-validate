@@ -8,14 +8,16 @@
         remoteValidate = function( $http, $timeout, $q ) {
             return {
                 restrict: 'A',
-                require: 'ngModel',
-                link: function( scope, el, attrs, ngModel ) {
+                require: [ '^form','ngModel' ],
+                link: function( scope, el, attrs, ctrls ) {
                     var cache = {},
                         handleChange,
                         setValidation,
                         addToCache,
                         request,
                         shouldProcess,
+                        ngForm = ctrls[ 0 ],
+                        ngModel = ctrls[ 1 ],
                         options = {
                             ngRemoteThrottle: 400,
                             ngRemoteMethod: 'POST'
@@ -60,12 +62,14 @@
                             addToCache( response );    
                         }
                         ngModel.$setValidity( directiveId, isValid );
-                        el.removeClass( 'ng-processing' );
-                        ngModel.$processing = false;
+                        ngModel.$processing = ngModel.$pending = ngForm.$pending = false;
                     };
 
                     handleChange = function( value ) {
-                        if( typeof value === 'undefined' ) return;
+                        if( typeof value === 'undefined' || value === '' ) {
+                            ngModel.$setPristine();
+                            return;
+                        };
 
                         if ( !shouldProcess( value ) ) {
                             return setValidation( [ { data: { isValid: true, value: value } } ], true );
@@ -74,14 +78,18 @@
                         if ( cache[ value ] ) {
                             return setValidation( cache[ value ], true );
                         }
-
+                        
+                        //Set processing now, before the delay. 
+                        //Check first to reduce dom updates
+                        if( !ngModel.$pending ) {
+                            ngModel.$processing = ngModel.$pending = ngForm.$pending = true;
+                        }
+                        
                         if ( request ) {
                             $timeout.cancel( request );
                         }
 
                         request = $timeout( function( ) {
-                            el.addClass( 'ng-processing' );
-                            ngModel.$processing = true;
 							var calls = [],
                                 i = 0,
                                 l = options.urls.length,
@@ -109,6 +117,7 @@
                         return true;
                     };
 
+                    //ngModel.$parsers.unshift( handleChange );
                     scope.$watch( function( ) {
                         return ngModel.$viewValue;
                     }, handleChange );
