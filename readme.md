@@ -75,7 +75,7 @@ This will be a basic change password form that requires the user to enter their 
     
     <div>
         <button type="submit" 
-                ng-disabled="changePasswordForm.$invalid" 
+                ng-disabled="changePasswordForm.$invalid || changePasswordForm.$pending" 
                 ng-click="changePassword(password.new, changePasswordForm);reset();">
             Change password
         </button>
@@ -111,18 +111,15 @@ There are a few defaults that can be overwritten with options. They are:
        required>
 ```
 
-ngRemote will also add a class named `ng-processing` to the input while the Ajax request is processing and also sets a $processing property on your model property. You can add some css to your project to show an animation in the input like so:
+ngRemote will add a `$pending` property on your model and the containing form. You can use these to show loading animations and to disable the form submit button:
 
-```css
-input.ng-processing {
-    background-image: url(../img/loader-small.gif) !important;
-    background-position: right center !important;
-    background-repeat: no-repeat;
-}
-```
 
 ```html
-<span class="message" ng-show="formName.inputName.$processing">validating...</span>
+<span class="message" ng-show="myForm.inputName.$pending">validating...</span>
+
+...
+
+<button type="submit" ng-disabled="myForm.$invalid || myForm.$pending" ng-click="...">Go!</button>
 ```
 
 ##Server side##
