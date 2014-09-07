@@ -6,7 +6,7 @@ ngRemoveValidate makes it easy for you to validate form fields agents data from 
 
 - Drop in solution for Ajax validation of any text or password input
 
-- Works with Angulars built in validation and cab be accessed at `formName.inputName.$error.ngRemoteValidate`
+- Works with Angulars built in validation and can be accessed at `formName.inputName.$error.ngRemoteValidate`
 
 - Throttles server requests (default 400ms) and can be set with `ng-remote-throttle="550"`
 
@@ -86,7 +86,7 @@ This will be a basic change password form that requires the user to enter their 
 ##Options##
 There are a few defaults that can be overwritten with options. They are:
 
-- `ng-remote-validate` takes a string or an Array of string i.e. `ng-remote-validate="/url/one"` or `ng-remote-validate="[ '/url/one', '/url/two' ]"`
+- `ng-remote-validate` takes a string, an Array of string i.e. `ng-remote-validate="/url/one"` or `ng-remote-validate="[ '/url/one', '/url/two' ]"`, or an Object of string/validation pairs i.e. `ng-remote-validate="{ '/url/validate/unique' : 'unique', '/url/validate/blacklist' : 'blacklisted'}"`, which would respectively set `formName.inputName.$error.unique` and `formName.inputName.$error.blacklisted` in addition to the catch-all `formName.inputName.$error.ngRemoteValidate`.
 - `ng-remote-throttle` (default: 400) Users inactivity length before sending validation requests to the server
 - `ng-remote-method` (default: 'POST') Type of request you would like to send
 
