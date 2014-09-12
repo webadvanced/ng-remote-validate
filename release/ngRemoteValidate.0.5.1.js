@@ -27,6 +27,9 @@
 
                     if( options.ngRemoteValidate.charAt( 0 ) === '[' ) {
                         options.urls = eval( options.ngRemoteValidate );
+                    } else if (options.ngRemoteValidate.charAt( 0 ) === '{') {
+                        options.keys = eval( '(' + options.ngRemoteValidate + ')' );
+                        options.urls = Object.keys( options.keys );
                     } else {
                         options.urls = [ options.ngRemoteValidate ];
                     }
@@ -40,7 +43,11 @@
                     shouldProcess = function( value ) {
                         var otherRulesInValid = false;
                         for ( var p in ngModel.$error ) {
-                            if ( ngModel.$error[ p ] && p != directiveId ) {
+                            var checkedKey = !options.hasOwnProperty('keys') ||
+                                !(Object.keys(options.keys).filter(function(k) {
+                                    return options.keys[k] === p;
+                                })[0]);
+                            if ( ngModel.$error[ p ] && p != directiveId && checkedKey ) {
                                 otherRulesInValid = true;
                                 break;
                             }
@@ -51,11 +58,22 @@
                     setValidation = function( response, skipCache ) {
                         var i = 0,
                             l = response.length,
+                            useKeys = options.hasOwnProperty('keys'),
                             isValid = true;
                         for( ; i < l; i++ ) {
                             if( !response[ i ].data.isValid ) {
                                 isValid = false;
-                                break;
+                                if (!useKeys) {
+                                    break;
+                                }
+                            }
+                            var canSetKey = (useKeys &&
+                                response[ i ].hasOwnProperty('config') &&
+                                options.keys[ response[ i ].config.url ]);
+
+                            if (canSetKey) {
+                                var key = options.keys[ response[ i ].config.url ];
+                                ngModel.$setValidity( key, response[ i ].data.isValid );
                             }
                         }
                         if( !skipCache ) {
@@ -126,7 +144,7 @@
         };
 
     angular.module( 'remoteValidation', [] )
-           .constant('MODULE_VERSION', '0.4.1')
+           .constant('MODULE_VERSION', '0.5.1')
            .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
            
 })( this.angular );
