@@ -61,6 +61,11 @@
                             useKeys = options.hasOwnProperty('keys'),
                             isValid = true;
                         for( ; i < l; i++ ) {
+
+                            if(scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.response){
+                                response[ i ] = scope.ngRemoteInterceptors.response(response[ i ]);
+                            }
+
                             if( !response[ i ].data.isValid ) {
                                 isValid = false;
                                 if (!useKeys) {
@@ -126,6 +131,11 @@
 
                             for( ; i < l; i++ ) {
                                 httpOpts.url =  options.urls[ i ];
+
+                                if(scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.request){
+                                    httpOpts = scope.ngRemoteInterceptors.request(httpOpts);
+                                }
+
                                 calls.push( $http( httpOpts ) );
                             }
 
