@@ -9,6 +9,9 @@
             return {
                 restrict: 'A',
                 require: [ '^form','ngModel' ],
+                scope: {
+                    ngRemoteInterceptors: '=?'
+                },
                 link: function( scope, el, attrs, ctrls ) {
                     var cache = {},
                         handleChange,
@@ -61,6 +64,11 @@
                             useKeys = options.hasOwnProperty('keys'),
                             isValid = true;
                         for( ; i < l; i++ ) {
+
+                            if(scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.response){
+                                response[ i ] = scope.ngRemoteInterceptors.response(response[ i ]);
+                            }
+
                             if( !response[ i ].data.isValid ) {
                                 isValid = false;
                                 if (!useKeys) {
@@ -126,6 +134,11 @@
 
                             for( ; i < l; i++ ) {
                                 httpOpts.url =  options.urls[ i ];
+
+                                if(scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.request){
+                                    httpOpts = scope.ngRemoteInterceptors.request(httpOpts);
+                                }
+
                                 calls.push( $http( httpOpts ) );
                             }
 
@@ -144,7 +157,7 @@
         };
 
     angular.module( 'remoteValidation', [] )
-           .constant('MODULE_VERSION', '0.5.1')
+           .constant('MODULE_VERSION', '0.5.5')
            .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
            
 })( this.angular );
