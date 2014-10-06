@@ -9,6 +9,9 @@
             return {
                 restrict: 'A',
                 require: [ '^form','ngModel' ],
+                scope: {
+                    ngRemoteInterceptors: '=?'
+                },
                 link: function( scope, el, attrs, ctrls ) {
                     var cache = {},
                         handleChange,
