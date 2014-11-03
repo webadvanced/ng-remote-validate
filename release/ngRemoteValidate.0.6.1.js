@@ -27,7 +27,7 @@
                         };
 
                     angular.extend( options, attrs );
-
+					//TODO: Use Cain of Responsibility to reduce complexity.
                     if( options.ngRemoteValidate.charAt( 0 ) === '[' ) {
                         options.urls = eval( options.ngRemoteValidate );
                     } else if (options.ngRemoteValidate.charAt( 0 ) === '{') {
@@ -46,10 +46,11 @@
                     shouldProcess = function( value ) {
                         var otherRulesInValid = false;
                         for ( var p in ngModel.$error ) {
-                            var checkedKey = !options.hasOwnProperty('keys') ||
-                                !(Object.keys(options.keys).filter(function(k) {
-                                    return options.keys[k] === p;
-                                })[0]);
+                            var checkedKey = !options.hasOwnProperty( 'keys' ) ||
+                                             !( Object.keys(options.keys )
+								.filter( function( k ) {
+                                    return options.keys[ k ] === p;
+                                } )[ 0 ] );
                             if ( ngModel.$error[ p ] && p != directiveId && checkedKey ) {
                                 otherRulesInValid = true;
                                 break;
@@ -61,12 +62,12 @@
                     setValidation = function( response, skipCache ) {
                         var i = 0,
                             l = response.length,
-                            useKeys = options.hasOwnProperty('keys'),
+                            useKeys = options.hasOwnProperty( 'keys' ),
                             isValid = true;
                         for( ; i < l; i++ ) {
 
-                            if(scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.response){
-                                response[ i ] = scope.ngRemoteInterceptors.response(response[ i ]);
+                            if( scope.ngRemoteInterceptors && scope.ngRemoteInterceptors.response ) {
+                                response[ i ] = scope.ngRemoteInterceptors.response( response[ i ] );
                             }
 
                             if( !response[ i ].data.isValid ) {
@@ -75,11 +76,12 @@
                                     break;
                                 }
                             }
-                            var canSetKey = (useKeys &&
-                                response[ i ].hasOwnProperty('config') &&
-                                options.keys[ response[ i ].config.url ]);
+							
+                            var canSetKey = ( useKeys &&
+                                              response[ i ].hasOwnProperty( 'config' ) &&
+                                              options.keys[ response[ i ].config.url ] );
 
-                            if (canSetKey) {
+                            if ( canSetKey ) {
                                 var key = options.keys[ response[ i ].config.url ];
                                 ngModel.$setValidity( key, response[ i ].data.isValid );
                             }
@@ -95,7 +97,7 @@
                         if( typeof value === 'undefined' || value === '' ) {
                             ngModel.$setPristine();
                             return;
-                        };
+                        }
 
                         if ( !shouldProcess( value ) ) {
                             return setValidation( [ { data: { isValid: true, value: value } } ], true );
@@ -106,7 +108,7 @@
                         }
                         
                         //Set processing now, before the delay. 
-                        //Check first to reduce dom updates
+                        //Check first to reduce DOM updates
                         if( !ngModel.$pending ) {
                             ngModel.$processing = ngModel.$pending = ngForm.$pending = true;
                         }
