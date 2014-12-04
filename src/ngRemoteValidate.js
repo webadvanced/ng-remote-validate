@@ -88,7 +88,7 @@
 							
 							if( response[ i ].data.formattedValue ) {
 								ngModel.$setViewValue(response[ i ].data.formattedValue);
-								ngmodel.$render();
+								ngModel.$render();
 							}
                         }
                         if( !skipCache ) {
