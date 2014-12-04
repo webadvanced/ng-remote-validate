@@ -95,7 +95,11 @@
 
                     handleChange = function( value ) {
                         if( typeof value === 'undefined' || value === '' ) {
+                            if ( request ) {
+                                $timeout.cancel( request );
+                             }
                             ngModel.$setPristine();
+                            ngModel.$setValidity( directiveId, true);
                             return;
                         }
 
@@ -112,6 +116,9 @@
                         if( !ngModel.$pending ) {
                             ngModel.$processing = ngModel.$pending = ngForm.$pending = true;
                         }
+						
+						//This line is required, otherwise the ng-invalid-ng-remote-validate class is not removed until a response is received
+						ngModel.$setValidity( directiveId, undefined);
                         
                         if ( request ) {
                             $timeout.cancel( request );
