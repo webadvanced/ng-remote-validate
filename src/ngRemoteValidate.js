@@ -85,6 +85,11 @@
                                 var key = options.keys[ response[ i ].config.url ];
                                 ngModel.$setValidity( key, response[ i ].data.isValid );
                             }
+							
+							if( response[ i ].data.formattedValue ) {
+								ngModel.$setViewValue(response[ i ].data.formattedValue);
+								ngmodel.$render();
+							}
                         }
                         if( !skipCache ) {
                             addToCache( response );    
