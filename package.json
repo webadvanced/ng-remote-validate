@@ -1,0 +1,16 @@
+{
+  "name": "ng-remote-validate",
+  "description": "makes it easy for you to validate form fields agents data from your server. For example, a sign up form may need to check if the email entered is already registered before submitting the form.",
+  "version": "0.6.2",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-ng-annotate": "^0.5.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.3",
+    "gulp-uglify": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azatoth/ng-remote-validate.git"
+  }
+}
