@@ -100,7 +100,11 @@
 
                     handleChange = function( value ) {
                         if( typeof value === 'undefined' || value === '' ) {
+                            if ( request ) {
+                                $timeout.cancel( request );
+                             }
                             ngModel.$setPristine();
+                            ngModel.$setValidity( directiveId, true);
                             return;
                         }
 
