@@ -124,8 +124,8 @@
                                 toValidate = { value: value },
                                 httpOpts = { method: options.ngRemoteMethod };
                             
-                            if ( scope[ el[0].name + 'SetArgs' ] ) {
-                                toValidate = scope[el[0].name + 'SetArgs'](value, el, attrs, ngModel);
+                            if ( scope.$parent[ el[0].name + 'SetArgs' ] ) {
+                                toValidate = scope.$parent[el[0].name + 'SetArgs'](value, el, attrs, ngModel);
                             }
 
                             if(options.ngRemoteMethod == 'POST'){
@@ -159,7 +159,7 @@
         };
 
     angular.module( 'remoteValidation', [] )
-           .constant('MODULE_VERSION', '0.6.1')
+           .constant('MODULE_VERSION', '0.6.1.1')
            .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
            
 })( this.angular );
