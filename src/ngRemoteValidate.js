@@ -113,6 +113,9 @@
                         }
 
                         if ( cache[ value ] ) {
+                            if (request) {
+                                    $timeout.cancel(request);
+                            }
                             return setValidation( cache[ value ], true );
                         }
 
