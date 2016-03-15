@@ -105,6 +105,14 @@
                              }
                             ngModel.$setPristine();
                             ngModel.$setValidity( directiveId, true);
+                            if ( options.hasOwnProperty( 'keys' ) ) {
+                                var i = 0,
+                                    l = options.urls.length;
+                                for( ; i < l; i++ ) {
+                                    var key = options.keys[ options.urls[i] ];
+                                    ngModel.$setValidity( key, true);
+                                }
+                            }
                             return;
                         }
 
