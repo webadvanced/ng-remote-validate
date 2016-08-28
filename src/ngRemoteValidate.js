@@ -171,4 +171,4 @@
            .constant('MODULE_VERSION', '##_version_##')
            .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
 
-})( this.angular );
+})( window.angular );
