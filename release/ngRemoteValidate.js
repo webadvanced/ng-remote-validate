@@ -27,7 +27,7 @@
                         };
 
                     angular.extend( options, attrs );
-					//TODO: Use Cain of Responsibility to reduce complexity.
+                    //TODO: Use Cain of Responsibility to reduce complexity.
                     if( options.ngRemoteValidate.charAt( 0 ) === '[' ) {
                         options.urls = eval( options.ngRemoteValidate );
                     } else if (options.ngRemoteValidate.charAt( 0 ) === '{') {
@@ -48,7 +48,7 @@
                         for ( var p in ngModel.$error ) {
                             var checkedKey = !options.hasOwnProperty( 'keys' ) ||
                                              !( Object.keys(options.keys )
-								.filter( function( k ) {
+                                .filter( function( k ) {
                                     return options.keys[ k ] === p;
                                 } )[ 0 ] );
                             if ( ngModel.$error[ p ] && p != directiveId && checkedKey ) {
@@ -76,7 +76,7 @@
                                     break;
                                 }
                             }
-							
+
                             var canSetKey = ( useKeys &&
                                               response[ i ].hasOwnProperty( 'config' ) &&
                                               options.keys[ response[ i ].config.url ] );
@@ -85,9 +85,14 @@
                                 var key = options.keys[ response[ i ].config.url ];
                                 ngModel.$setValidity( key, response[ i ].data.isValid );
                             }
+
+                            if( response[ i ].data.formattedValue ) {
+                                ngModel.$setViewValue( response[ i ].data.formattedValue );
+                                ngModel.$render( );
+                            }
                         }
                         if( !skipCache ) {
-                            addToCache( response );    
+                            addToCache( response );
                         }
                         ngModel.$setValidity( directiveId, isValid );
                         ngModel.$processing = ngModel.$pending = ngForm.$pending = false;
@@ -95,7 +100,11 @@
 
                     handleChange = function( value ) {
                         if( typeof value === 'undefined' || value === '' ) {
+                            if ( request ) {
+                                $timeout.cancel( request );
+                             }
                             ngModel.$setPristine();
+                            ngModel.$setValidity( directiveId, true);
                             return;
                         }
 
@@ -106,24 +115,24 @@
                         if ( cache[ value ] ) {
                             return setValidation( cache[ value ], true );
                         }
-                        
-                        //Set processing now, before the delay. 
+
+                        //Set processing now, before the delay.
                         //Check first to reduce DOM updates
                         if( !ngModel.$pending ) {
                             ngModel.$processing = ngModel.$pending = ngForm.$pending = true;
                         }
-                        
+
                         if ( request ) {
                             $timeout.cancel( request );
                         }
 
                         request = $timeout( function( ) {
-							var calls = [],
+                            var calls = [],
                                 i = 0,
                                 l = options.urls.length,
                                 toValidate = { value: value },
                                 httpOpts = { method: options.ngRemoteMethod };
-                            
+
                             if ( scope[ el[0].name + 'SetArgs' ] ) {
                                 toValidate = scope[el[0].name + 'SetArgs'](value, el, attrs, ngModel);
                             }
@@ -145,7 +154,7 @@
                             }
 
                             $q.all( calls ).then( setValidation );
-                            
+
                         }, options.ngRemoteThrottle );
                         return true;
                     };
@@ -159,7 +168,7 @@
         };
 
     angular.module( 'remoteValidation', [] )
-           .constant('MODULE_VERSION', '0.6.1')
+           .constant('MODULE_VERSION', '0.6.5')
            .directive( directiveId, [ '$http', '$timeout', '$q', remoteValidate ] );
-           
+
 })( this.angular );
